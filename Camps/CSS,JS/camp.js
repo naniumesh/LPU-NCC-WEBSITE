@@ -131,7 +131,11 @@ function displayStudents(data){
 
     container.innerHTML = "";
 
-    if(!data[className]){
+    if(
+        !data ||
+        !data[className] ||
+        data[className].length === 0
+    ){
 
         container.innerHTML = `
 
@@ -152,7 +156,7 @@ function displayStudents(data){
     }
 
     const students =
-    data[className];
+    data[className] || [];
 
     students.forEach(student=>{
 
