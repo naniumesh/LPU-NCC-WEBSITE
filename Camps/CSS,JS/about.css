@@ -1,0 +1,393 @@
+/* Global Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 5px;
+    padding: 0;
+    background-color: #fff; /* White background */
+}
+
+/* 1st Division Styles */
+.division1 {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #f2f2f2;
+}
+
+.division1 .left {
+    margin-left: 45px;
+    padding: 4px;
+}
+
+.division1 .right {
+    display: flex;
+    align-items: center;
+}
+
+.division1 .right img {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
+
+
+
+/* 2nd Division */
+ /* Styling for the first division */
+ .first-division {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+/* Styling for the NCC section */
+.ncc-section {
+    display: flex;
+    align-items: center;
+}
+
+/* Styling for the NCC logo */
+.ncc-logo img {
+    width: 80px;
+}
+
+/* Styling for the text */
+.ncc-text {
+    text-align: center;
+    margin-left: 30px;
+}
+
+/* Styling for the Hindi text */
+.hindi-text {
+    font-size: 20px;
+}
+
+/* Styling for the English text */
+.english-text {
+    font-size: 30px;
+}
+
+/* Styling for the right logos */
+.right-logos {
+    display: flex;
+    gap: 40px;
+}
+
+/* Styling for the right logo of NCC */
+.right-logo img{
+    width: 100px;
+}
+
+.nav-toggle {
+    font-size: 40px; /* Make the hamburger icon bigger */
+    color: #000000; /* Change the color to dark */
+    display: none; /* Hide by default */
+}
+
+/* Hide right logos and show hamburger icon on mobile view */
+@media only screen and (max-width: 600px) {
+    .right-logos {
+        display: none;
+    }
+    .ncc-section {
+        justify-content: right;
+    }
+    .ncc-text {
+        margin-left: 20px;
+       
+    }
+    .nav-toggle {
+        
+        display: block; /* Show in mobile view */
+        margin-left: 55px;/* Push to the right side */
+    }
+}
+
+
+
+
+
+
+
+
+
+/* Styling for the third division navigation bar */
+.division3 { 
+    display: none;
+    background-color: rgb(28, 99, 0);
+    padding: 10px;
+  }
+  
+  /* Show third division and hide hamburger icon on desktop view */
+  @media only screen and (min-width: 601px) {
+    .division3 {
+        display: block;
+    }
+    .nav-toggle {
+        display: none;
+    }
+  }
+  
+  /* Styling for the third division navigation bar */
+  .division3 nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .division3 nav ul li {
+    position: relative;
+    display: block;
+    flex-grow: 0;
+  }
+  
+  .division3 nav ul li a {
+    display: block;
+    padding: 14px;
+    text-decoration: none;
+    color: #ffffff;
+  }
+  
+  .division3 nav ul li:hover {
+    background-color: #ff850b;
+    cursor: pointer;
+  }
+  
+  .division3 nav ul li.dropdown:hover .dropdown-content {
+    display: block;
+  }
+  
+  .division3 nav ul li.dropdown .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: blue;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  .division3 nav ul li.dropdown .dropdown-content a {
+    color: #fff;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .division3 nav ul li.dropdown .dropdown-content a:hover {
+    background-color: #fff;
+    color: #000;
+    transform: scale(1.1);
+  }
+  
+  .division3 nav ul li.right-dash {
+    margin-left: auto;
+  }
+  
+  /* Styling for the enroll button */
+  .enroll-button {
+    background: linear-gradient(90deg, #ff0000, #0011ff);
+    color: white;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .enroll-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Styling for active class */
+  .active {
+    display: flex;
+  }
+  
+  @media only screen and (max-width: 600px) {
+    .division3 nav ul {
+        flex-direction: column;
+    }
+  }
+
+
+/* 4th Division Styles */
+.division4 {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #f2f2f2;
+}
+
+.division4 .path {
+ 
+    text-align: center;
+    display: flex;
+    padding-top:9px;
+
+}
+
+.division4 .right {
+    display: flex;
+    align-items: center;
+}
+
+.division4 .right img {
+    width: 30px;
+    height: 30px;
+    margin-left: 10px;
+}
+
+/* 5th Division Styles */
+.division5 {
+    padding: 20px;
+    margin: 20px;
+}
+
+.division5EP {
+    padding: 8px;
+    margin: 20px;
+    line-height: 30px;
+}
+
+
+.division5 #heading {
+    text-align: left;
+   
+}
+
+.division5 #content {
+    text-align: justify;
+}
+
+.division5a {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.photo {
+    border: 2px solid #ccc;
+    padding: 15px;
+    margin: 10px;
+    text-align: center;
+}
+
+.photo img {
+    width: 250px;
+    height: auto;
+}
+
+#headingF{
+    margin-left: 50px;
+}
+
+
+/* Style for particular Flag page */
+.division50 img{
+    width: 50%;
+    height: 39vh;
+    background-color: rgb(255, 255, 255);
+}
+@media only screen and (max-width:600px){
+
+    .division50 img{
+        height: auto;
+        margin-top: 20px;
+        width: auto;
+    }
+}
+
+
+
+
+
+
+
+/* 6th Division Styles */
+.division6 {
+    background-color: #d3d3d3; /* Grey background */
+    padding: 10px;
+}
+
+.division6 .footer-links {
+    text-align: center;
+}
+
+.division6 .footer-links a {
+    color: #000;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.division6 .footer-links a:hover {
+    color: #fff; /* White text on hover */
+}
+
+/* 7th Division Styles */
+.division7 {
+    background-color: #000; /* Black background */
+    color: #fff; /* White text */
+    text-align: center;
+    padding: 20px;
+}
+
+.division7 .logos {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.division7 .logos img {
+    margin: 0 10px;
+}
+
+
+
+
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+.modal-content {
+    width: 100%;
+    max-width: 400px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+    transform: scale(0.8);
+    opacity: 0;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+.modal-overlay.active .modal-content {
+    transform: scale(1);
+    opacity: 1;
+}
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 22px;
+    cursor: pointer;
+    color: #555;
+}
+.close-btn:hover {
+    color: black;
+}
