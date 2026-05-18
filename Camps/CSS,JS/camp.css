@@ -704,3 +704,13 @@ body {
 
     font-weight:bold;
 }
+
+/* =========================================
+   FORCE CAPITAL LETTERS
+========================================= */
+
+.person-card,
+#personDetail{
+
+    text-transform:uppercase;
+}
