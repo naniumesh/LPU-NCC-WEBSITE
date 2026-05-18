@@ -156,7 +156,20 @@ function displayStudents(data){
     }
 
     const students =
-    data[className] || [];
+    (data[className] || []).sort((a,b)=>{
+        const aYear =
+        
+        parseInt(
+            a.batch.split("-")[0]
+        );
+        
+        const bYear =
+        parseInt(
+            b.batch.split("-")[0]
+        );
+        
+        return aYear - bYear;
+    });
 
     students.forEach(student=>{
 
