@@ -36,66 +36,160 @@ window.addEventListener('resize', function () {
 
 // 4th Division
 // =========================================
-// DYNAMIC NCC SLIDER
+// OFFLINE IMAGE SLIDER SYSTEM
 // =========================================
+let newsInterval;
+let sliderInterval;
 
 const slidesContainer =
-    document.getElementById(
-        "slidesContainer"
-    );
+document.getElementById(
+    "slidesContainer"
+);
 
 let currentIndex = 0;
 
 let totalSlides = 0;
 
-let autoSlide;
 
-// LOAD IMAGES FROM BACKEND
+const SLIDER_CACHE_KEY =
+"lpu_ncc_slider_cache";
+
+// LOAD SLIDER IMAGES
 
 async function loadSliderImages(){
 
     try{
 
         const response =
-            await fetch(
-                "https://news-slider-tf3b.onrender.com/images"
+        await fetch(
+            "https://news-slider-tf3b.onrender.com/images"
+        );
+
+        if(!response.ok){
+
+            throw new Error(
+                "SERVER ERROR"
             );
+        }
 
         const images =
-            await response.json();
+        await response.json();
 
-        slidesContainer.innerHTML = "";
+        // SAVE CACHE
 
-        images.forEach(img => {
+        localStorage.setItem(
 
-            slidesContainer.innerHTML += `
+            SLIDER_CACHE_KEY,
 
-                <div class="slide">
+            JSON.stringify(images)
+        );
 
-                    <div
-                        class="blur-bg"
-                        style="
-                            background-image:
-                            url('${img.url}')
-                        ">
-                    </div>
+        console.log(
+            "ONLINE SLIDER LOADED"
+        );
 
-                    <img
-                        src="${img.url}"
-                        alt="NCC News">
-
-                </div>
-            `;
-        });
-
-        totalSlides = images.length;
-
-        startSlider();
+        renderSlider(images);
 
     }catch(error){
 
-        console.error(error);
+        console.log(
+            "OFFLINE SLIDER MODE"
+        );
+
+        // LOAD FROM CACHE
+
+        const cachedImages =
+        localStorage.getItem(
+            SLIDER_CACHE_KEY
+        );
+
+        if(cachedImages){
+
+            const parsedImages =
+            JSON.parse(cachedImages);
+
+            renderSlider(parsedImages);
+
+        }else{
+
+            slidesContainer.innerHTML = `
+
+                <div style="
+                    width:100%;
+                    height:500px;
+                    display:flex;
+                    justify-content:center;
+                    align-items:center;
+                    color:white;
+                    font-size:25px;
+                    background:#111;
+                ">
+
+                    IMAGE SERVER IS SLEEPING
+
+                </div>
+
+            `;
+        }
     }
+}
+
+// RENDER SLIDER
+
+
+function renderSlider(images){
+    
+    currentIndex = 0;
+
+    if(!images || images.length === 0){
+        slidesContainer.innerHTML = `
+            <div style="
+                width:100%;
+                height:500px;
+                display:flex;
+                justify-content:center;
+                align-items:center;
+                color:white;
+                background:#111;
+            ">
+                NO IMAGES AVAILABLE
+            </div>
+        `;
+        return;
+    }
+
+    slidesContainer.innerHTML = "";
+
+    images.forEach(img=>{
+
+        slidesContainer.innerHTML += `
+
+            <div class="slide">
+
+                <div
+                    class="blur-bg"
+
+                    style="
+                        background-image:
+                        url('${img.url}')
+                    "
+                >
+                </div>
+
+                <img
+                    src="${img.url}"
+                    alt="NCC News">
+
+            </div>
+
+        `;
+    });
+
+    totalSlides = images.length;
+
+    updateCarousel();
+
+    startSlider();
 }
 
 // UPDATE SLIDE
@@ -104,7 +198,7 @@ function updateCarousel(){
 
     slidesContainer.style.transform =
 
-        `translateX(-${currentIndex * 100}%)`;
+    `translateX(-${currentIndex * 100}%)`;
 }
 
 // NEXT
@@ -121,7 +215,7 @@ function nextSlide(){
     updateCarousel();
 }
 
-// PREV
+// PREVIOUS
 
 function prevSlide(){
 
@@ -130,7 +224,7 @@ function prevSlide(){
     if(currentIndex < 0){
 
         currentIndex =
-            totalSlides - 1;
+        totalSlides - 1;
     }
 
     updateCarousel();
@@ -140,32 +234,44 @@ function prevSlide(){
 
 function startSlider(){
 
-    autoSlide =
-        setInterval(nextSlide, 6000);
+    clearInterval(sliderInterval);
+    
+    sliderInterval =
+    setInterval(
+        nextSlide,
+        6000
+    );
 }
 
 // RESET TIMER
 
 function resetAutoSlide(){
 
-    clearInterval(autoSlide);
-
-    autoSlide =
-        setInterval(nextSlide, 6000);
+    clearInterval(sliderInterval);
+    
+    sliderInterval =
+    setInterval(
+        nextSlide,
+        6000
+    );
 }
 
-// BUTTONS
+// NEXT BUTTON
 
 document.querySelector(".next")
-.addEventListener("click", () => {
+
+.addEventListener("click", ()=>{
 
     nextSlide();
 
     resetAutoSlide();
 });
 
+// PREV BUTTON
+
 document.querySelector(".prev")
-.addEventListener("click", () => {
+
+.addEventListener("click", ()=>{
 
     prevSlide();
 
@@ -311,7 +417,9 @@ function prepareNews(newsItems){
 
     showNextNews();
 
-    setInterval(
+    clearInterval(newsInterval);
+    
+    newsInterval = setInterval(
         showNextNews,
         12000
     );
