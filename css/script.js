@@ -179,51 +179,199 @@ loadSliderImages();
 
 
 //5th devision
-// === News Scroll Integration ===
-const container = document.getElementById("newsContainer");
+// =========================================
+// OFFLINE NEWS SCROLL SYSTEM
+// =========================================
+
+const container =
+document.getElementById(
+    "newsContainer"
+);
+
 let sortedNews = [];
+
 let newsIndex = 0;
 
-fetch('https://main-lpu-ncc.onrender.com/api/news') // Backend URL
-    .then(response => response.json())
-    .then(newsItems => {
-        const now = new Date();
+const NEWS_CACHE_KEY =
+"lpu_ncc_news_cache";
 
-        sortedNews = newsItems
-            .sort((a, b) => new Date(b.date) - new Date(a.date))
-            .map(news => {
-                const created = new Date(news.date);
-                const diffDays = (now - created) / (1000 * 60 * 60 * 24);
-                const isNew = diffDays <= 14;
-                return {
-                    text: news.text,
-                    url: news.url,
-                    isNew
-                };
-            });
+// LOAD NEWS
 
-        showNextNews(); // Start rotation
-        setInterval(showNextNews, 12000); // Every 12s
-    })
-    .catch(err => console.error('Error fetching news:', err));
+async function loadNews(){
 
-function showNextNews() {
-    if (!sortedNews.length) return;
+    try{
 
-    container.innerHTML = '';
+        const response =
+        await fetch(
+            "https://main-lpu-ncc.onrender.com/api/news"
+        );
 
-    const news = sortedNews[newsIndex];
-    const update = document.createElement("div");
-    update.className = "update" + (news.isNew ? " new-update" : "");
+        if(!response.ok){
+
+            throw new Error(
+                "SERVER ERROR"
+            );
+        }
+
+        const newsItems =
+        await response.json();
+
+        // SAVE CACHE
+
+        localStorage.setItem(
+
+            NEWS_CACHE_KEY,
+
+            JSON.stringify(newsItems)
+        );
+
+        console.log(
+            "ONLINE NEWS LOADED"
+        );
+
+        prepareNews(newsItems);
+
+    }catch(error){
+
+        console.log(
+            "OFFLINE NEWS MODE"
+        );
+
+        // LOAD FROM CACHE
+
+        const cachedNews =
+        localStorage.getItem(
+            NEWS_CACHE_KEY
+        );
+
+        if(cachedNews){
+
+            const parsedNews =
+            JSON.parse(cachedNews);
+
+            prepareNews(parsedNews);
+
+        }else{
+
+            container.innerHTML = `
+
+                <div class="update">
+
+                    <span>
+                        NEWS SERVER IS CURRENTLY SLEEPING.
+                        PLEASE TRY AGAIN AFTER FEW SECONDS.
+                    </span>
+
+                </div>
+
+            `;
+        }
+    }
+}
+
+// PREPARE NEWS
+
+function prepareNews(newsItems){
+
+    const now =
+    new Date();
+
+    sortedNews =
+    newsItems
+
+    .sort((a,b)=>
+
+        new Date(b.date) -
+        new Date(a.date)
+    )
+
+    .map(news=>{
+
+        const created =
+        new Date(news.date);
+
+        const diffDays =
+
+        (now - created) /
+
+        (1000 * 60 * 60 * 24);
+
+        return{
+
+            text:
+            news.text,
+
+            url:
+            news.url,
+
+            isNew:
+            diffDays <= 14
+        };
+    });
+
+    showNextNews();
+
+    setInterval(
+        showNextNews,
+        12000
+    );
+}
+
+// SHOW NEXT NEWS
+
+function showNextNews(){
+
+    if(!sortedNews.length)
+        return;
+
+    container.innerHTML = "";
+
+    const news =
+    sortedNews[newsIndex];
+
+    const update =
+    document.createElement("div");
+
+    update.className =
+
+        "update" +
+
+        (news.isNew
+            ? " new-update"
+            : "");
+
     update.innerHTML = `
-        <span>${news.text}</span>
-        <a class="read-more-button" href="${news.url}" target="_blank">Click Here</a>
+
+        <span>
+            ${news.text}
+        </span>
+
+        <a
+            class="read-more-button"
+            href="${news.url}"
+            target="_blank"
+        >
+
+            Click Here
+
+        </a>
+
     `;
 
     container.appendChild(update);
 
-    newsIndex = (newsIndex + 1) % sortedNews.length;
+    newsIndex =
+
+    (newsIndex + 1)
+
+    %
+
+    sortedNews.length;
 }
+
+// START NEWS
+
+loadNews();
 
 
 
